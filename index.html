@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <!-- Bloqueia o zoom e o redimensionamento do usuário em celulares -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Teclado de Estrelas</title>
+  <style>
+    /* Suporte aos formatos .otf e .ttf */
+    @font-face {
+      font-family: 'IdiomaEstrelas';
+      src: url('idioma_estrelas.otf') format('opentype'),
+           url('idioma_estrelas.ttf') format('truetype');
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      /* Impede a seleção acidental de texto e duplo toque de zoom no mobile */
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    body {
+      background-color: #121214;
+      color: #e1e1e6;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 12px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      background-color: #202024;
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 1.1rem;
+      text-align: center;
+      color: #a8a8b3;
+    }
+
+    /* Caixa de Entrada com a Fonte Personalizada (Aumentada) */
+    .display-box {
+      font-family: 'IdiomaEstrelas', sans-serif;
+      font-size: 2rem;
+      min-height: 58px;
+      background-color: #121214;
+      border: 2px solid #29292e;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #00e676;
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    /* Teclado Virtual Responsivo */
+    .keyboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      background-color: #121214;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #29292e;
+    }
+
+    /* Teclas do Teclado com Fonte Aumentada */
+    .key {
+      font-family: 'IdiomaEstrelas', sans-serif;
+      font-size: 1.7rem;
+      background-color: #29292e;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      height: 52px;
+      flex: 1 0 11%;
+      min-width: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.1s ease, transform 0.05s ease;
+    }
+
+    .key:active {
+      background-color: #00e676;
+      color: #121214;
+      transform: scale(0.95);
+    }
+
+    .key-space {
+      flex: 2 0 45%;
+      font-family: Arial, sans-serif;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #8d8d99;
+    }
+
+    .key-backspace {
+      flex: 1 0 18%;
+      font-family: Arial, sans-serif;
+      font-size: 1rem;
+      background-color: #7a1f1f;
+    }
+
+    .key-backspace:active {
+      background-color: #a82828;
+    }
+
+    /* Botão Traduzir */
+    .btn-translate {
+      background-color: #00e676;
+      color: #121214;
+      font-weight: bold;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.05s ease;
+    }
+
+    .btn-translate:active {
+      background-color: #00c853;
+      transform: scale(0.98);
+    }
+
+    /* Caixinha de Resultado (Verdana) */
+    .translated-box {
+      font-family: Verdana, sans-serif;
+      font-size: 1.3rem;
+      min-height: 54px;
+      background-color: #121214;
+      border: 2px solid #00e676;
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: #ffffff;
+      word-break: break-all;
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    .label-text {
+      font-size: 0.8rem;
+      color: #8d8d99;
+      margin-bottom: -8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Teclado Estelar 🌟</h1>
+
+    <span class="label-text">Texto digitado (Idioma Estrelas):</span>
+    <div id="display" class="display-box"></div>
+
+    <!-- Teclado com a ordem exata das letras solicitadas -->
+    <div class="keyboard" id="keyboard">
+      <!-- QERTUIOPASDFGHJKLZXCVBNM -->
+      <button class="key" onclick="digitar('Q')">Q</button>
+      <button class="key" onclick="digitar('E')">E</button>
+      <button class="key" onclick="digitar('R')">R</button>
+      <button class="key" onclick="digitar('T')">T</button>
+      <button class="key" onclick="digitar('U')">U</button>
+      <button class="key" onclick="digitar('I')">I</button>
+      <button class="key" onclick="digitar('O')">O</button>
+      <button class="key" onclick="digitar('P')">P</button>
+      <button class="key" onclick="digitar('A')">A</button>
+      <button class="key" onclick="digitar('S')">S</button>
+      <button class="key" onclick="digitar('D')">D</button>
+      <button class="key" onclick="digitar('F')">F</button>
+      <button class="key" onclick="digitar('G')">G</button>
+      <button class="key" onclick="digitar('H')">H</button>
+      <button class="key" onclick="digitar('J')">J</button>
+      <button class="key" onclick="digitar('K')">K</button>
+      <button class="key" onclick="digitar('L')">L</button>
+      <button class="key" onclick="digitar('Z')">Z</button>
+      <button class="key" onclick="digitar('X')">X</button>
+      <button class="key" onclick="digitar('C')">C</button>
+      <button class="key" onclick="digitar('V')">V</button>
+      <button class="key" onclick="digitar('B')">B</button>
+      <button class="key" onclick="digitar('N')">N</button>
+      <button class="key" onclick="digitar('M')">M</button>
+      
+      <!-- Tecla Espaço e Apagar -->
+      <button class="key key-space" onclick="digitar(' ')">ESPAÇO</button>
+      <button class="key key-backspace" onclick="apagar()">⌫</button>
+    </div>
+
+    <button class="btn-translate" onclick="traduzir()">Traduzir</button>
+
+    <span class="label-text">Tradução (Verdana):</span>
+    <div id="resultado" class="translated-box"></div>
+  </div>
+
+  <script>
+    let textoAtual = '';
+
+    const displayEl = document.getElementById('display');
+    const resultadoEl = document.getElementById('resultado');
+
+    function atualizarDisplay() {
+      displayEl.textContent = textoAtual;
+    }
+
+    function digitar(caractere) {
+      textoAtual += caractere;
+      atualizarDisplay();
+    }
+
+    function apagar() {
+      textoAtual = textoAtual.slice(0, -1);
+      atualizarDisplay();
+    }
+
+    function traduzir() {
+      resultadoEl.textContent = textoAtual;
+    }
+
+    // Bloqueia qualquer entrada do teclado físico do PC ou celular
+    document.addEventListener('keydown', function(event) {
+      event.preventDefault();
+    });
+
+    // Previne zoom por gesto de dois dedos (pinch-to-zoom)
+    document.addEventListener('touchmove', function(event) {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    }, { passive: false });
+  </script>
+
+</body>
+</html>
